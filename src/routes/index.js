@@ -1,11 +1,14 @@
 const express = require("express");
-
 const router = express.Router();
 
-const commentsRoute = require("./comments.route");
-const postsRoute = require("./posts.route");
+const taskRoute = require("./tasks.route");
 
-router.use("/comments", commentsRoute);
-router.use("/posts", postsRoute);
+router.get("/test-success", function (_, res) {
+  res.success({ message: "Hello world" });
+});
+router.get("/test-error", function () {
+  throw new Error("Test exception!");
+});
+router.use("/tasks", taskRoute);
 
 module.exports = router;

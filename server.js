@@ -1,11 +1,13 @@
+require("dotenv").config();
+
 const express = require("express");
 var cors = require("cors");
 
 const appRoutes = require("./src/routes");
-const json = require("./src/middlewares/json.middleware");
-const errorHandler = require("./src/middlewares/errorHandler.middleware");
-const notFound = require("./src/middlewares/notFound.middleware");
-const response = require("./src/middlewares/response.middleware");
+const json = require("./src/middlewares/json");
+const responseFormat = require("./src/middlewares/responseFormat");
+const exceptionHandler = require("./src/middlewares/exceptionHandler");
+const notFoundHandler = require("./src/middlewares/notFoundHandler");
 
 const app = express();
 const port = 3000;
@@ -21,11 +23,11 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(json);
-app.use(response);
+app.use(responseFormat);
 
 app.use("/api", appRoutes);
-app.use(notFound);
-app.use(errorHandler);
+app.use(notFoundHandler);
+app.use(exceptionHandler);
 
 app.listen(port, "localhost", () => {
   console.log(`Example app listening http://localhost:${port}`);
