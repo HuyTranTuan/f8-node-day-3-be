@@ -18,14 +18,19 @@ const create = async (req, res) => {
     await taskModel.create(req.body);
     res.success({ message: "Task created!" }, 201);
   } catch (error) {
-    res.error(424, "Create task failed!");
+    res.error(424, error);
   }
 };
 
 const update = async (req, res) => {
-  const task = await taskModel.update(req.params.id, req.body);
-  if (!task) return res.error(404, "Cannot edit");
-  res.success(task, 204);
+  const task = await taskModel.findOne(req.params.id);
+  if (!task) return res.error(404, "Task not found!");
+  try {
+    await taskModel.update(req.params.id, req.body);
+    res.success(task, 204);
+  } catch (error) {
+    res.error(424, error);
+  }
 };
 
 const destroy = async (req, res) => {
@@ -33,8 +38,12 @@ const destroy = async (req, res) => {
   if (!task) {
     return res.error(404, "Task not found!");
   }
-  await taskModel.destroy(task.id);
-  res.success(task, 204);
+  try {
+    await taskModel.destroy(task.id);
+    res.success(task, 204);
+  } catch (error) {
+    res.error(500, error);
+  }
 };
 
 module.exports = { findAll, findOne, create, update, destroy };

@@ -8,6 +8,7 @@ const json = require("./src/middlewares/json");
 const responseFormat = require("./src/middlewares/responseFormat");
 const exceptionHandler = require("./src/middlewares/exceptionHandler");
 const notFoundHandler = require("./src/middlewares/notFoundHandler");
+const { apiRateLimiter } = require("./src/middlewares/rateLimiter");
 
 const app = express();
 const port = 3000;
@@ -24,6 +25,7 @@ app.use(cors(corsOptions));
 
 app.use(json);
 app.use(responseFormat);
+app.use(apiRateLimiter);
 
 app.use("/api", appRoutes);
 app.use(notFoundHandler);

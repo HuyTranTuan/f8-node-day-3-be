@@ -2,13 +2,13 @@ const pool = require("../config/database");
 
 class Task {
   async findAll() {
-    const [rows, field] = await pool.query(`select * from tasks;`);
+    const [rows] = await pool.query(`select * from tasks;`);
     return rows;
   }
 
   async findOne(id) {
-    const [rows] = await pool.query(`select * from tasks where id = ${id};`);
-    return rows[0];
+    const [row] = await pool.query(`select * from tasks where id = ${id};`);
+    return row[0];
   }
 
   async create(taskData) {
